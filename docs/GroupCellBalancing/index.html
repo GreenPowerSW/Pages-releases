@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GroupCellBalancing - Downloads</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f5f7fa; color: #333; line-height: 1.6; }
+        header { background: linear-gradient(135deg, #1565c0, #1e88e5); color: white; padding: 2rem 1rem; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+        header h1 { font-size: 1.8rem; font-weight: 600; margin-bottom: 0.3rem; }
+        header p { font-size: 0.95rem; opacity: 0.9; }
+        .container { max-width: 800px; margin: 2rem auto; padding: 0 1rem; }
+        .description { background: white; border-radius: 8px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+        .description h2 { font-size: 1.1rem; color: #1565c0; margin-bottom: 0.5rem; }
+        .description p { font-size: 0.9rem; color: #555; }
+        .downloads-section { background: white; border-radius: 8px; padding: 1.5rem; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+        .downloads-section h2 { font-size: 1.1rem; color: #1565c0; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid #e3f2fd; }
+        .file-list { list-style: none; }
+        .file-item { display: flex; align-items: center; justify-content: space-between; padding: 0.8rem 1rem; border: 1px solid #e3f2fd; border-radius: 6px; margin-bottom: 0.5rem; transition: background-color 0.2s, box-shadow 0.2s; }
+        .file-item:hover { background-color: #e3f2fd; box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
+        .file-info { flex: 1; min-width: 0; }
+        .file-name { font-size: 0.9rem; font-weight: 500; color: #333; word-break: break-all; }
+        .file-meta { font-size: 0.8rem; color: #888; margin-top: 0.2rem; }
+        .file-version { display: inline-block; background: #e3f2fd; color: #1565c0; padding: 0.1rem 0.5rem; border-radius: 3px; font-size: 0.75rem; font-weight: 600; margin-right: 0.5rem; }
+        .file-latest { display: inline-block; background: #1565c0; color: white; padding: 0.1rem 0.5rem; border-radius: 3px; font-size: 0.7rem; font-weight: 600; margin-right: 0.5rem; }
+        .download-btn { display: inline-flex; align-items: center; gap: 0.3rem; background: #1e88e5; color: white; text-decoration: none; padding: 0.5rem 1rem; border-radius: 5px; font-size: 0.85rem; font-weight: 500; transition: background-color 0.2s; white-space: nowrap; flex-shrink: 0; margin-left: 1rem; }
+        .download-btn:hover { background: #1565c0; }
+        .download-btn svg { width: 16px; height: 16px; fill: currentColor; }
+        .no-files { text-align: center; padding: 2rem; color: #888; }
+        footer { text-align: center; padding: 1.5rem 1rem; color: #999; font-size: 0.8rem; margin-top: 1rem; }
+        footer a { color: #1e88e5; text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+        @media (max-width: 600px) {
+            header h1 { font-size: 1.4rem; }
+            .file-item { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+            .download-btn { margin-left: 0; width: 100%; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>GroupCellBalancing</h1>
+        <p>Cell Balancer Group Control &amp; Monitoring System</p>
+    </header>
+    <div class="container">
+        <div class="description">
+            <h2>About</h2>
+            <p>
+                GroupCellBalancing is a WPF application for controlling and monitoring Cell Balancer equipment.
+                It manages up to 40 channels (5 Boards x 8 Channels) with group-based independent operation,
+                real-time voltage/current monitoring, and data logging.
+            </p>
+        </div>
+        <div class="downloads-section">
+            <h2>Downloads (Manual Installer)</h2>
+            <ul class="file-list">
+                <li class="file-item">
+                    <div class="file-info">
+                        <div class="file-name">GroupCellBalancing_v3.0.1_Build_20260210_1742_Setup.exe</div>
+                        <div class="file-meta">
+                            <span class="file-latest">LATEST</span>
+                            <span class="file-version">v3.0.1</span>
+                            Build: 2026-02-10 17:42 &middot; 8.1 MB
+                        </div>
+                    </div>
+                    <a class="download-btn" href="./GroupCellBalancing_v3.0.1_Build_20260210_1742_Setup.exe" download>
+                        <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                        Download
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <footer>
+        &copy; Green Power Co., Ltd. &mdash;
+        <a href="https://github.com/GreenPowerSW">GitHub</a>
+        &nbsp;&middot;&nbsp; Updated: 2026-02-10 17:57
+    </footer>
+</body>
+</html>
