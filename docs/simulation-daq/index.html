@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SimulationDAQ - Downloads</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, #2e7d32, #43a047);
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+
+        header p {
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .description {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+        }
+
+        .description h2 {
+            font-size: 1.1rem;
+            color: #2e7d32;
+            margin-bottom: 0.5rem;
+        }
+
+        .description p {
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        .downloads-section {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+        }
+
+        .downloads-section h2 {
+            font-size: 1.1rem;
+            color: #2e7d32;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e8f5e9;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #888;
+        }
+
+        .loading .spinner {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            border: 3px solid #e0e0e0;
+            border-top-color: #43a047;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 0.5rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .file-list {
+            list-style: none;
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.8rem 1rem;
+            border: 1px solid #e8f5e9;
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+            transition: background-color 0.2s, box-shadow 0.2s;
+        }
+
+        .file-item:hover {
+            background-color: #f1f8e9;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+        }
+
+        .file-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .file-name {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #333;
+            word-break: break-all;
+        }
+
+        .file-meta {
+            font-size: 0.8rem;
+            color: #888;
+            margin-top: 0.2rem;
+        }
+
+        .file-version {
+            display: inline-block;
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 0.1rem 0.5rem;
+            border-radius: 3px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-right: 0.5rem;
+        }
+
+        .file-latest {
+            display: inline-block;
+            background: #2e7d32;
+            color: white;
+            padding: 0.1rem 0.5rem;
+            border-radius: 3px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-right: 0.5rem;
+        }
+
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            background: #43a047;
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: background-color 0.2s;
+            white-space: nowrap;
+            flex-shrink: 0;
+            margin-left: 1rem;
+        }
+
+        .download-btn:hover {
+            background: #2e7d32;
+        }
+
+        .download-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        .error-msg {
+            text-align: center;
+            padding: 2rem;
+            color: #c62828;
+        }
+
+        .no-files {
+            text-align: center;
+            padding: 2rem;
+            color: #888;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1.5rem 1rem;
+            color: #999;
+            font-size: 0.8rem;
+            margin-top: 1rem;
+        }
+
+        footer a {
+            color: #43a047;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 1.4rem;
+            }
+
+            .file-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+
+            .download-btn {
+                margin-left: 0;
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>SimulationDAQ</h1>
+        <p>DAQ Option Box Simulator for GroupCellBalancing</p>
+    </header>
+
+    <div class="container">
+        <div class="description">
+            <h2>About</h2>
+            <p>
+                SimulationDAQ is a simulator application for DAQ Option Box hardware,
+                used for testing the GroupCellBalancing program without physical hardware.
+                It supports SLCAN and CANable (CAN FD) communication.
+            </p>
+        </div>
+
+        <div class="downloads-section">
+            <h2>Downloads (Manual Installer)</h2>
+            <div id="file-list">
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>Loading file list...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        &copy; Green Power Co., Ltd. &mdash;
+        <a href="https://github.com/GreenPowerSW">GitHub</a>
+    </footer>
+
+    <script>
+        const GITHUB_API_URL = 'https://api.github.com/repos/GreenPowerSW/Pages-releases/contents/docs/simulation-daq';
+        const BASE_URL = './';
+        const SETUP_PATTERN = /^SimulationDAQ_v[\d.]+_Build_\d+_\d+_Setup\.exe$/;
+
+        function formatFileSize(bytes) {
+            if (bytes >= 1048576) return (bytes / 1048576).toFixed(1) + ' MB';
+            if (bytes >= 1024) return (bytes / 1024).toFixed(1) + ' KB';
+            return bytes + ' B';
+        }
+
+        function extractVersion(filename) {
+            const match = filename.match(/SimulationDAQ_(v[\d.]+)_Build/);
+            return match ? match[1] : '';
+        }
+
+        function extractBuildDate(filename) {
+            const match = filename.match(/Build_(\d{4})(\d{2})(\d{2})_(\d{2})(\d{2})/);
+            if (match) {
+                return `${match[1]}-${match[2]}-${match[3]} ${match[4]}:${match[5]}`;
+            }
+            return '';
+        }
+
+        function renderFiles(files) {
+            const container = document.getElementById('file-list');
+
+            const setupFiles = files
+                .filter(f => SETUP_PATTERN.test(f.name))
+                .sort((a, b) => b.name.localeCompare(a.name));
+
+            if (setupFiles.length === 0) {
+                container.innerHTML = '<div class="no-files">No installer files available.</div>';
+                return;
+            }
+
+            let html = '<ul class="file-list">';
+            setupFiles.forEach((file, index) => {
+                const version = extractVersion(file.name);
+                const buildDate = extractBuildDate(file.name);
+                const size = formatFileSize(file.size);
+                const isLatest = index === 0;
+
+                html += `
+                    <li class="file-item">
+                        <div class="file-info">
+                            <div class="file-name">${file.name}</div>
+                            <div class="file-meta">
+                                ${isLatest ? '<span class="file-latest">LATEST</span>' : ''}
+                                ${version ? `<span class="file-version">${version}</span>` : ''}
+                                ${buildDate ? `Build: ${buildDate}` : ''}
+                                &nbsp;&middot;&nbsp; ${size}
+                            </div>
+                        </div>
+                        <a class="download-btn" href="${BASE_URL}${file.name}" download>
+                            <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                            Download
+                        </a>
+                    </li>`;
+            });
+            html += '</ul>';
+            container.innerHTML = html;
+        }
+
+        function showError(message) {
+            const container = document.getElementById('file-list');
+            container.innerHTML = `<div class="error-msg">${message}</div>`;
+        }
+
+        async function loadFiles() {
+            try {
+                const response = await fetch(GITHUB_API_URL);
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+                const files = await response.json();
+                renderFiles(files);
+            } catch (error) {
+                showError(
+                    'Failed to load file list. ' +
+                    '<br>Please try again later or visit ' +
+                    '<a href="https://github.com/GreenPowerSW/Pages-releases/tree/main/docs/simulation-daq">' +
+                    'the GitHub repository</a> directly.'
+                );
+            }
+        }
+
+        loadFiles();
+    </script>
+</body>
+</html>
