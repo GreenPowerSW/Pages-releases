@@ -14,6 +14,7 @@
         .description { background: white; border-radius: 8px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
         .description h2 { font-size: 1.1rem; color: #2e7d32; margin-bottom: 0.5rem; }
         .description p { font-size: 0.9rem; color: #555; }
+        .description ul { font-size: 0.85rem; color: #555; margin-top: 0.5rem; padding-left: 1.5rem; }
         .downloads-section { background: white; border-radius: 8px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
         .downloads-section h2 { font-size: 1.1rem; color: #2e7d32; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid #e8f5e9; }
         .file-list { list-style: none; }
@@ -46,55 +47,27 @@
                 It provides AES-256-GCM encryption, DPAPI master key management,
                 Argon2id password hashing, and GitHub App authentication.
             </p>
-        </div>
-        <div class="downloads-section">
-            <h2>Native DLL</h2>
-            <ul class="file-list">
-                <li class="file-item">
-                    <div class="file-info">
-                        <div class="file-name">GpSecurity.dll</div>
-                        <div class="file-meta">
-                            <span class="file-latest">LATEST</span>
-                            <span class="file-version">v2.0.1</span>
-                            1.9 MB &middot; Native DLL (Rust)
-                        </div>
-                    </div>
-                    <a class="download-btn" href="./GpSecurity.dll" download>
-                        <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
-                        Download
-                    </a>
-                </li>
+            <p style="margin-top: 0.5rem;">Each package contains:</p>
+            <ul>
+                <li><code>GpSecurity.dll</code> &mdash; Native DLL (Rust)</li>
+                <li><code>CSharp/GpSecurityClient.cs</code> &mdash; High-level API wrapper</li>
+                <li><code>CSharp/GpSecurity.Interop.cs</code> &mdash; P/Invoke definitions</li>
+                <li><code>CSharp/GpSecurityException.cs</code> &mdash; Custom exception</li>
             </ul>
         </div>
         <div class="downloads-section">
-            <h2>C# Wrapper Files</h2>
+            <h2>Downloads</h2>
             <ul class="file-list">
                 <li class="file-item">
                     <div class="file-info">
-                        <div class="file-name">CSharp/GpSecurity.Interop.cs</div>
-                        <div class="file-meta">5.0 KB &middot; C# Wrapper</div>
+                        <div class="file-name">GpSecurity_v2.0.2_Build_20260401_1551_Package.zip</div>
+                        <div class="file-meta">
+                            <span class="file-latest">LATEST</span>
+                            <span class="file-version">v2.0.2</span>
+                            Build: 2026-04-01 15:51 &middot; 969.8 KB &middot; DLL + C# Wrapper
+                        </div>
                     </div>
-                    <a class="download-btn" href="./CSharp/GpSecurity.Interop.cs" download>
-                        <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
-                        Download
-                    </a>
-                </li>
-                <li class="file-item">
-                    <div class="file-info">
-                        <div class="file-name">CSharp/GpSecurityClient.cs</div>
-                        <div class="file-meta">7.9 KB &middot; C# Wrapper</div>
-                    </div>
-                    <a class="download-btn" href="./CSharp/GpSecurityClient.cs" download>
-                        <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
-                        Download
-                    </a>
-                </li>
-                <li class="file-item">
-                    <div class="file-info">
-                        <div class="file-name">CSharp/GpSecurityException.cs</div>
-                        <div class="file-meta">716 B &middot; C# Wrapper</div>
-                    </div>
-                    <a class="download-btn" href="./CSharp/GpSecurityException.cs" download>
+                    <a class="download-btn" href="./GpSecurity_v2.0.2_Build_20260401_1551_Package.zip" download>
                         <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
                         Download
                     </a>
@@ -105,7 +78,7 @@
     <footer>
         &copy; Changwon Heo (Green Power Co., Ltd.) &mdash;
         <a href="https://github.com/cwheo">GitHub</a>
-        &nbsp;&middot;&nbsp; Updated: 2026-04-01 14:58
+        &nbsp;&middot;&nbsp; Updated: 2026-04-01 15:52
     </footer>
 </body>
 </html>
