@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SimulationTMS &mdash; 사용자 매뉴얼</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Pretendard:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0b0d12;
+    --bg-elev: #12151c;
+    --bg-panel: #171b24;
+    --border: #242a36;
+    --border-soft: #1c2029;
+    --text: #e6e9ef;
+    --text-dim: #a0a6b3;
+    --text-mute: #6b7280;
+    --accent: #ff6b35;
+    --accent-2: #ff9566;
+    --accent-soft: rgba(255, 107, 53, 0.12);
+    --info: #4aa8ff;
+    --success: #35d073;
+    --warn: #ffcc4d;
+    --danger: #ff5a6a;
+    --grad-1: linear-gradient(135deg, #ff6b35 0%, #f7b32b 50%, #ff3860 100%);
+    --grad-2: linear-gradient(180deg, #1a1f2b 0%, #0b0d12 100%);
+    --code-bg: #0e1117;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.3);
+    --shadow-md: 0 4px 16px rgba(0,0,0,0.4);
+    --shadow-lg: 0 20px 60px rgba(0,0,0,0.5);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  html, body { margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Pretendard', 'Inter', -apple-system, 'Segoe UI', 'Malgun Gothic', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 15px;
+    font-feature-settings: "cv02", "cv03", "cv04";
+    -webkit-font-smoothing: antialiased;
+  }
+
+  code, pre { font-family: 'JetBrains Mono', Consolas, 'Courier New', monospace; }
+
+  /* === Hero === */
+  .hero {
+    position: relative;
+    padding: 96px 24px 120px;
+    overflow: hidden;
+    background:
+      radial-gradient(ellipse 80% 60% at 20% 30%, rgba(255, 107, 53, 0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 80% 70%, rgba(74, 168, 255, 0.12) 0%, transparent 60%),
+      var(--grad-2);
+    border-bottom: 1px solid var(--border);
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 40px 40px;
+    mask-image: radial-gradient(ellipse 60% 50% at 50% 40%, black 40%, transparent 100%);
+    pointer-events: none;
+  }
+  .hero-inner {
+    position: relative;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .hero .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    background: var(--accent-soft);
+    border: 1px solid rgba(255, 107, 53, 0.3);
+    border-radius: 999px;
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .hero .eyebrow::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 4px rgba(255,107,53,0.2);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(255,107,53,0.3); }
+    50% { box-shadow: 0 0 0 6px rgba(255,107,53,0); }
+  }
+  .hero h1 {
+    margin: 0 0 16px;
+    font-size: clamp(40px, 6vw, 72px);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    background: var(--grad-1);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero p.lead {
+    max-width: 680px;
+    font-size: 18px;
+    color: var(--text-dim);
+    margin: 0 0 32px;
+  }
+  .hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    font-size: 13px;
+    color: var(--text-mute);
+  }
+  .hero-meta span {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 12px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+  }
+  .hero-meta span svg { width: 14px; height: 14px; }
+
+  /* === Layout === */
+  .layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 48px;
+    max-width: 1280px;
+    margin: -60px auto 0;
+    padding: 0 32px 96px;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* === TOC === */
+  aside.toc {
+    position: sticky;
+    top: 24px;
+    align-self: start;
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px 12px;
+    max-height: calc(100vh - 48px);
+    overflow-y: auto;
+    box-shadow: var(--shadow-md);
+  }
+  aside.toc h3 {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--text-mute);
+    text-transform: uppercase;
+    margin: 4px 12px 12px;
+  }
+  aside.toc ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    counter-reset: toc;
+  }
+  aside.toc li {
+    counter-increment: toc;
+    position: relative;
+  }
+  aside.toc a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    color: var(--text-dim);
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 13.5px;
+    font-weight: 500;
+    transition: all 0.15s ease;
+    position: relative;
+  }
+  aside.toc a::before {
+    content: counter(toc, decimal-leading-zero);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-mute);
+    font-weight: 500;
+  }
+  aside.toc a:hover {
+    background: rgba(255,255,255,0.04);
+    color: var(--text);
+  }
+  aside.toc a.active {
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+  aside.toc a.active::before { color: var(--accent); }
+  aside.toc a.active::after {
+    content: '';
+    position: absolute;
+    left: -12px;
+    top: 50%; transform: translateY(-50%);
+    width: 3px; height: 18px;
+    background: var(--accent);
+    border-radius: 0 3px 3px 0;
+  }
+
+  /* === Content === */
+  main { min-width: 0; }
+  section.doc {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 36px 40px;
+    margin-bottom: 24px;
+    scroll-margin-top: 24px;
+    box-shadow: var(--shadow-sm);
+    transition: border-color 0.2s ease;
+  }
+  section.doc:hover { border-color: var(--border); }
+  section.doc .sec-head {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-soft);
+  }
+  section.doc .sec-num {
+    flex-shrink: 0;
+    width: 44px; height: 44px;
+    display: grid; place-items: center;
+    background: var(--grad-1);
+    border-radius: 12px;
+    color: #fff;
+    font-weight: 700;
+    font-size: 16px;
+    box-shadow: 0 4px 14px rgba(255,107,53,0.3);
+  }
+  section.doc h2 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  section.doc h2 + .sub-title {
+    color: var(--text-mute);
+    font-size: 13px;
+    margin-top: 4px;
+  }
+  section.doc h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 24px 0 10px;
+    color: var(--text);
+    display: flex; align-items: center; gap: 8px;
+  }
+  section.doc h3::before {
+    content: '';
+    width: 3px; height: 14px;
+    background: var(--accent);
+    border-radius: 2px;
+  }
+  section.doc p { margin: 8px 0; color: var(--text-dim); }
+  section.doc strong { color: var(--text); font-weight: 600; }
+  section.doc ul, section.doc ol { padding-left: 20px; color: var(--text-dim); }
+  section.doc li { margin: 6px 0; }
+  section.doc li strong { color: var(--text); }
+
+  code {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    padding: 1px 7px;
+    border-radius: 5px;
+    font-size: 0.88em;
+    color: var(--accent-2);
+  }
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    overflow-x: auto;
+    font-size: 13px;
+    line-height: 1.6;
+    margin: 14px 0;
+    position: relative;
+  }
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: var(--text);
+  }
+  pre::before {
+    content: '';
+    position: absolute;
+    top: 12px; right: 14px;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: #3a3f4b;
+    box-shadow: -16px 0 0 #3a3f4b, -32px 0 0 #3a3f4b;
+  }
+
+  /* Tables */
+  .table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin: 14px 0;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 14px;
+  }
+  th, td {
+    padding: 12px 16px;
+    text-align: left;
+    vertical-align: top;
+    border-bottom: 1px solid var(--border-soft);
+  }
+  thead th {
+    background: rgba(255,255,255,0.02);
+    font-weight: 600;
+    color: var(--text);
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: rgba(255,255,255,0.02); }
+
+  /* Callouts */
+  .callout {
+    display: flex;
+    gap: 14px;
+    padding: 14px 18px;
+    border-radius: 10px;
+    margin: 16px 0;
+    border: 1px solid;
+    font-size: 14px;
+  }
+  .callout .ico {
+    flex-shrink: 0; width: 22px; height: 22px;
+    margin-top: 1px;
+  }
+  .callout p { margin: 0; color: var(--text); }
+  .callout.tip { background: rgba(74,168,255,0.08); border-color: rgba(74,168,255,0.3); }
+  .callout.tip .ico { color: var(--info); }
+  .callout.note { background: rgba(255,204,77,0.08); border-color: rgba(255,204,77,0.3); }
+  .callout.note .ico { color: var(--warn); }
+  .callout.warn { background: rgba(255,90,106,0.08); border-color: rgba(255,90,106,0.3); }
+  .callout.warn .ico { color: var(--danger); }
+  .callout strong { margin-right: 6px; }
+
+  /* Feature grid (intro) */
+  .feat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 14px;
+    margin: 20px 0 4px;
+  }
+  .feat-card {
+    padding: 16px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    transition: transform 0.15s ease, border-color 0.15s ease;
+  }
+  .feat-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255,107,53,0.4);
+  }
+  .feat-card .fi {
+    display: grid; place-items: center;
+    width: 36px; height: 36px;
+    border-radius: 9px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+  .feat-card .fi svg { width: 18px; height: 18px; }
+  .feat-card h4 {
+    margin: 0 0 4px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .feat-card p {
+    margin: 0;
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+
+  /* Steps */
+  ol.steps {
+    list-style: none;
+    padding: 0;
+    counter-reset: step;
+  }
+  ol.steps > li {
+    counter-increment: step;
+    position: relative;
+    padding: 10px 0 10px 48px;
+    margin: 0;
+  }
+  ol.steps > li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0; top: 8px;
+    width: 32px; height: 32px;
+    display: grid; place-items: center;
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 13px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  ol.steps > li:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 15.5px; top: 42px; bottom: 0;
+    width: 1px;
+    background: var(--border);
+  }
+
+  /* Tags */
+  .tag {
+    display: inline-block;
+    padding: 2px 8px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    border: 1px solid rgba(255,107,53,0.3);
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    margin-left: 4px;
+  }
+
+  /* Link styling */
+  a { color: var(--accent-2); text-decoration: none; }
+  a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+  /* Footer */
+  footer.site-foot {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 40px 32px 60px;
+    border-top: 1px solid var(--border);
+    color: var(--text-mute);
+    font-size: 13px;
+    text-align: center;
+  }
+  footer.site-foot .foot-brand {
+    background: var(--grad-1);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 700;
+  }
+
+  /* Back to top */
+  .to-top {
+    position: fixed;
+    right: 28px; bottom: 28px;
+    width: 44px; height: 44px;
+    display: grid; place-items: center;
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    color: var(--text-dim);
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.2s ease;
+    z-index: 100;
+    box-shadow: var(--shadow-md);
+  }
+  .to-top.visible { opacity: 1; transform: translateY(0); }
+  .to-top:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .to-top svg { width: 18px; height: 18px; }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 5px; }
+  ::-webkit-scrollbar-thumb:hover { background: #2f3647; }
+
+  /* Responsive */
+  @media (max-width: 960px) {
+    .layout { grid-template-columns: 1fr; gap: 24px; padding: 0 20px 60px; }
+    aside.toc { position: static; max-height: none; }
+    section.doc { padding: 24px 22px; }
+    section.doc h2 { font-size: 20px; }
+    .hero { padding: 64px 20px 100px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <span class="eyebrow">Thermal Camera Simulator</span>
+    <h1>SimulationTMS<br>User Guide</h1>
+    <p class="lead">실제 TMS 열화상 카메라처럼 동작하는 가상 시뮬레이터. TMS_F 동작 검증과 알람 테스트를 위한 통합 매뉴얼입니다.</p>
+    <div class="hero-meta">
+      <span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"/></svg>
+        v1.0.5
+      </span>
+      <span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        최종 업데이트 2026-04-13
+      </span>
+      <span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        13 sections
+      </span>
+      <span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        KO / EN
+      </span>
+    </div>
+  </div>
+</section>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+<aside class="toc">
+  <h3>Contents</h3>
+  <ol>
+    <li><a href="#intro">소개</a></li>
+    <li><a href="#install">설치 및 실행</a></li>
+    <li><a href="#screen">메인 화면 구성</a></li>
+    <li><a href="#quickstart">빠른 시작</a></li>
+    <li><a href="#pattern">온도 패턴</a></li>
+    <li><a href="#hotspots">Hot Spots</a></li>
+    <li><a href="#area">Area 알람 오버라이드</a></li>
+    <li><a href="#preferences">환경 설정</a></li>
+    <li><a href="#menu">메뉴 안내</a></li>
+    <li><a href="#update">자동 업데이트</a></li>
+    <li><a href="#protocol">TMS 프로토콜</a></li>
+    <li><a href="#troubleshoot">문제 해결</a></li>
+    <li><a href="#contact">문의 및 피드백</a></li>
+  </ol>
+</aside>
+
+<main>
+
+<section class="doc" id="intro">
+  <div class="sec-head">
+    <div class="sec-num">01</div>
+    <div><h2>소개</h2><div class="sub-title">Introduction</div></div>
+  </div>
+  <p><strong>SimulationTMS</strong>는 TMS_F(Thermal Monitoring System) 프로그램의 테스트 및 개발 지원을 위한 <strong>열화상 카메라 시뮬레이터</strong>입니다. 실제 TMS 열화상 카메라(TMS_350, 160×120)가 연결된 것처럼 TCP/IP 프로토콜로 영상 및 온도 데이터를 전송하여, TMS_F의 기본 동작 검증과 알람 테스트를 수행합니다.</p>
+
+  <div class="feat-grid">
+    <div class="feat-card">
+      <div class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/></svg></div>
+      <h4>최대 21대 카메라</h4>
+      <p>TMS_350, 160×120 해상도의 가상 카메라</p>
+    </div>
+    <div class="feat-card">
+      <div class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h16M4 6h16M4 18h16"/></svg></div>
+      <h4>독립 TCP 서버</h4>
+      <p>카메라별 비동기 TCP 서버 지원</p>
+    </div>
+    <div class="feat-card">
+      <div class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 5-5"/></svg></div>
+      <h4>온도 패턴</h4>
+      <p>None / Gradient / Random + Hot Spot</p>
+    </div>
+    <div class="feat-card">
+      <div class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+      <h4>Area Override</h4>
+      <p>Warning/Alarm 트리거 테스트</p>
+    </div>
+    <div class="feat-card">
+      <div class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+      <h4>실시간 프리뷰</h4>
+      <p>Iron 컬러맵 기반 열화상 렌더링</p>
+    </div>
+    <div class="feat-card">
+      <div class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/></svg></div>
+      <h4>다국어</h4>
+      <p>영어 / 한국어 즉시 전환</p>
+    </div>
+  </div>
+</section>
+
+<section class="doc" id="install">
+  <div class="sec-head">
+    <div class="sec-num">02</div>
+    <div><h2>설치 및 실행</h2><div class="sub-title">Installation</div></div>
+  </div>
+
+  <h3>설치 절차</h3>
+  <ol class="steps">
+    <li>배포 페이지(<a href="https://greenpowersw.github.io/Pages-releases/SimulationTMS/">Pages</a>)에서 최신 인스톨러 다운로드</li>
+    <li><code>SimulationTMS_vX.X.X_Build_YYYYMMDD_HHMM_Setup.exe</code> 실행</li>
+    <li>설치 완료 후 자동 실행됩니다.</li>
+  </ol>
+
+  <h3>설치 경로</h3>
+  <pre><code>C:\GreenPower\SimulationTMS\
+  ├── Update.exe       # Velopack 업데이트 관리자
+  ├── current\         # 실행 파일
+  ├── Config\          # 사용자 설정 (업데이트 시 보존)
+  └── packages\        # 업데이트 패키지</code></pre>
+
+  <div class="callout tip">
+    <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+    <p><strong>Tip.</strong> <code>Config/</code> 폴더의 사용자 설정은 업데이트 시 보존됩니다. 기본값은 <code>AppSettings.default.json</code>, 사용자 수정값은 <code>Config/AppSettings.json</code>에 저장됩니다.</p>
+  </div>
+</section>
+
+<section class="doc" id="screen">
+  <div class="sec-head">
+    <div class="sec-num">03</div>
+    <div><h2>메인 화면 구성</h2><div class="sub-title">Main Window Layout</div></div>
+  </div>
+  <p>메인 화면은 세 영역으로 나뉩니다.</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>영역</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td>좌측 카메라 목록</td><td>최대 21대 카메라의 On/Off 체크, 선택, 상태 표시</td></tr>
+        <tr><td>우측 2열 그리드</td><td>1행 Thermal Preview + Noise/HotSpots · 2행 Pattern + Area Override · 3행 Thresholds</td></tr>
+        <tr><td>하단 로그</td><td>TCP 연결/요청, 알람, 에러 로그</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>각 카메라는 <strong>독립적인 설정</strong>(패턴, HotSpots, Noise, Area)을 가지며 설정 파일에 영속화됩니다.</p>
+</section>
+
+<section class="doc" id="quickstart">
+  <div class="sec-head">
+    <div class="sec-num">04</div>
+    <div><h2>빠른 시작</h2><div class="sub-title">Quick Start</div></div>
+  </div>
+  <ol class="steps">
+    <li>카메라 목록에서 사용할 카메라를 체크<span class="tag">REQUIRED</span></li>
+    <li>상단 툴바의 <strong>Start All</strong> 버튼 클릭 → 체크된 카메라만 TCP 서버 시작</li>
+    <li>TMS_F 등 클라이언트에서 해당 IP/Port로 접속</li>
+    <li>실시간 Thermal Preview와 로그로 동작 확인</li>
+    <li>테스트 완료 후 <strong>Stop All</strong>로 서버 종료</li>
+  </ol>
+  <div class="callout tip">
+    <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+    <p><strong>Tip.</strong> 카메라별 IP/Port는 목록 UI에서 직접 편집하며 자동 저장됩니다. 기본은 <code>127.0.0.1:5000</code>부터 순차 할당됩니다.</p>
+  </div>
+</section>
+
+<section class="doc" id="pattern">
+  <div class="sec-head">
+    <div class="sec-num">05</div>
+    <div><h2>온도 패턴</h2><div class="sub-title">Temperature Pattern</div></div>
+  </div>
+  <p>메인 화면의 <strong>Pattern</strong> Expander에서 선택된 카메라의 배경 온도 분포를 설정합니다.</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>패턴</th><th>설명</th></tr></thead>
+      <tbody>
+        <tr><td><code>None</code></td><td>평탄한 Base Temperature (노이즈 및 HotSpot만 반영)</td></tr>
+        <tr><td><code>Gradient</code></td><td>선택된 방향(상/하/좌/우/원형)으로 Base ~ Base+Range 선형 변화. Reverse 옵션으로 반전 가능</td></tr>
+        <tr><td><code>Random</code></td><td>픽셀별 Base ± Range/2 무작위 분포</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>파라미터</h3>
+  <ul>
+    <li><strong>Base Temperature</strong> — 기본 온도 (℃)</li>
+    <li><strong>Range</strong> — 패턴이 유발하는 온도 변동 폭 (℃)</li>
+    <li><strong>Direction</strong> — Gradient 방향 (Top / Bottom / Left / Right / Circle)</li>
+    <li><strong>Reverse</strong> — Gradient 반전</li>
+  </ul>
+  <p>각 Expander에는 <strong>Apply to Enabled CAMs</strong> / <strong>Apply to All CAMs</strong> 버튼이 있어 현재 설정을 일괄 적용할 수 있습니다.</p>
+</section>
+
+<section class="doc" id="hotspots">
+  <div class="sec-head">
+    <div class="sec-num">06</div>
+    <div><h2>Hot Spots</h2><div class="sub-title">Local Hot Regions</div></div>
+  </div>
+  <p>국소 고온 영역을 시뮬레이션합니다. 카메라당 <strong>최대 5개</strong> 등록 가능합니다.</p>
+  <h3>파라미터</h3>
+  <ul>
+    <li><strong>X, Y</strong> — 중심 좌표 (0~159, 0~119)</li>
+    <li><strong>Size</strong> — 반경 (픽셀, 가우시안 분포)</li>
+    <li><strong>Delta T</strong> — 배경 대비 온도 상승 (℃)</li>
+    <li><strong>Enabled</strong> — 개별 On/Off</li>
+  </ul>
+  <p>DataGrid UI에서 행을 추가/삭제하며, 변경은 즉시 프레임 생성에 반영됩니다.</p>
+</section>
+
+<section class="doc" id="area">
+  <div class="sec-head">
+    <div class="sec-num">07</div>
+    <div><h2>Area 알람 오버라이드</h2><div class="sub-title">Area Alarm Override</div></div>
+  </div>
+  <p>TMS_F 쪽 Area(관심영역)의 온도를 강제로 설정하여 <strong>Warning/Alarm 트리거</strong>를 테스트합니다.</p>
+  <ol class="steps">
+    <li><strong>Area 번호</strong> 선택 (1~10)</li>
+    <li>현재 온도(Current)와 Override 목표값(Target) 확인</li>
+    <li><strong>Apply</strong> 버튼 → 해당 Area 픽셀들의 온도를 Target 값으로 강제</li>
+    <li><strong>Reset</strong> 버튼 → 오버라이드 해제 (원래 패턴으로 복귀)</li>
+  </ol>
+  <p>Area 좌표 및 임계값(Warning1 / Warning2 / Alarm)은 <strong>SetTempInfo</strong> 패킷을 통해 TMS_F로부터 수신되며, Thresholds Expander에서 직접 편집할 수도 있습니다.</p>
+</section>
+
+<section class="doc" id="preferences">
+  <div class="sec-head">
+    <div class="sec-num">08</div>
+    <div><h2>환경 설정</h2><div class="sub-title">Preferences</div></div>
+  </div>
+  <p><strong>Settings &gt; Preferences</strong> 메뉴에서 전역 기본값을 설정합니다.</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>카테고리</th><th>항목</th></tr></thead>
+      <tbody>
+        <tr><td>General</td><td>Max Log Lines</td></tr>
+        <tr><td>Simulation</td><td>Base Temperature · Default Pattern (<code>None / Gradient / Random</code>) · Noise Level · Frame Interval (ms)</td></tr>
+        <tr><td>Network</td><td>Base IP · Port · Max Cameras</td></tr>
+        <tr><td>Updates</td><td>Check on Startup</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout note">
+    <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0zM12 9v4M12 17h.01"/></svg>
+    <p><strong>참고.</strong> <strong>언어</strong>는 Preferences가 아니라 메인 메뉴의 <code>Settings &gt; Language</code>에서 변경합니다. v1.0.5에서 Preferences의 Language 항목은 중복 UI여서 제거되었습니다.</p>
+  </div>
+</section>
+
+<section class="doc" id="menu">
+  <div class="sec-head">
+    <div class="sec-num">09</div>
+    <div><h2>메뉴 안내</h2><div class="sub-title">Menu Reference</div></div>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>메뉴</th><th>기능</th></tr></thead>
+      <tbody>
+        <tr><td><code>File &gt; Exit</code></td><td>프로그램 종료</td></tr>
+        <tr><td><code>Settings &gt; Preferences</code></td><td>환경 설정 창 열기</td></tr>
+        <tr><td><code>Settings &gt; Language</code></td><td>언어 변경 (English / 한국어) · 즉시 반영, 설정 저장</td></tr>
+        <tr><td><code>Help &gt; Documentation</code></td><td>본 매뉴얼 페이지 열기</td></tr>
+        <tr><td><code>Help &gt; Send Feedback</code></td><td>Google Forms 피드백 전송</td></tr>
+        <tr><td><code>Help &gt; Download Installer</code></td><td>최신 인스톨러 배포 페이지 열기</td></tr>
+        <tr><td><code>Help &gt; Check for Updates</code></td><td>Velopack 자동 업데이트 확인</td></tr>
+        <tr><td><code>Help &gt; About</code></td><td>버전/빌드 정보 보기</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="doc" id="update">
+  <div class="sec-head">
+    <div class="sec-num">10</div>
+    <div><h2>자동 업데이트</h2><div class="sub-title">Auto Update</div></div>
+  </div>
+  <p>Velopack 기반 자동 업데이트를 지원합니다.</p>
+  <ul>
+    <li>시작 시 자동 확인 — <strong>Check on Startup</strong>이 켜진 경우</li>
+    <li>수동 확인 — <code>Help &gt; Check for Updates</code></li>
+    <li>업데이트 URL — <code>https://greenpowersw.github.io/Pages-releases/SimulationTMS/</code></li>
+    <li>다운로드 후 재시작 시 적용되며, 사용자 설정은 <code>Config/</code> 폴더에 유지됩니다</li>
+  </ul>
+</section>
+
+<section class="doc" id="protocol">
+  <div class="sec-head">
+    <div class="sec-num">11</div>
+    <div><h2>TMS 프로토콜</h2><div class="sub-title">TCP Protocol Summary</div></div>
+  </div>
+  <ul>
+    <li><strong>모델</strong>: TMS_350 (0x02), 160×120 해상도</li>
+    <li><strong>온도 형식</strong>: Kelvin × 100 → <code>raw = (celsius + 273.15) × 100</code></li>
+  </ul>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Function</th><th>Code</th><th>응답 크기</th><th>설명</th></tr></thead>
+      <tbody>
+        <tr><td>ReqImage</td><td><code>0x01</code></td><td>38,619 B</td><td>프레임 + Spot + Area + WinAlm + Tilt</td></tr>
+        <tr><td>ReqCamInfo</td><td><code>0x08</code></td><td>125 B</td><td>카메라 정보</td></tr>
+        <tr><td>ReqTempInfo</td><td><code>0x03</code></td><td>198 B</td><td>Spot/Area 온도 정보</td></tr>
+        <tr><td>SetTempInfo</td><td><code>0x10</code></td><td>8 B (ACK)</td><td>Area 임계값 설정 수신</td></tr>
+        <tr><td>SetCamInfo</td><td><code>0x13</code></td><td>8 B (ACK)</td><td>카메라 정보 설정 수신</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="doc" id="troubleshoot">
+  <div class="sec-head">
+    <div class="sec-num">12</div>
+    <div><h2>문제 해결</h2><div class="sub-title">Troubleshooting</div></div>
+  </div>
+
+  <h3>Start 시 특정 카메라가 Error 상태</h3>
+  <ul>
+    <li>해당 Port가 이미 사용 중일 수 있음 → 다른 Port 사용 또는 충돌 프로세스 종료</li>
+    <li>방화벽이 TCP Listen을 차단한 경우 허용 규칙 추가</li>
+    <li>나머지 카메라는 정상 시작되며, 실패한 카메라만 Error 표시 (Graceful)</li>
+  </ul>
+
+  <h3>TMS_F에서 연결은 되지만 영상이 이상함</h3>
+  <ul>
+    <li>Base Temperature / Range 값 확인 (절대 영도 근처이면 화면이 깨짐)</li>
+    <li>Pattern이 <code>None</code>이면서 HotSpot도 없으면 단색으로 보임 → 정상</li>
+    <li>로그 패널에서 요청 Function Code 수신 여부 확인</li>
+  </ul>
+
+  <h3>자동 업데이트가 동작하지 않음</h3>
+  <div class="callout warn">
+    <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg>
+    <p><strong>주의.</strong> 구 버전(v1.0.5 이하)은 업데이트 URL이 이전 도메인으로 고정되어 있어 <strong>수동 재설치</strong>가 필요할 수 있습니다.</p>
+  </div>
+  <ul>
+    <li>인터넷 연결 및 방화벽 상태 확인</li>
+    <li>Velopack 설치 모드(<code>C:\GreenPower\SimulationTMS\current\</code>)가 아닌 경우 자동 업데이트 비활성</li>
+  </ul>
+</section>
+
+<section class="doc" id="contact">
+  <div class="sec-head">
+    <div class="sec-num">13</div>
+    <div><h2>문의 및 피드백</h2><div class="sub-title">Contact</div></div>
+  </div>
+  <ul>
+    <li>피드백 전송 — <code>Help &gt; Send Feedback</code> (Google Forms)</li>
+    <li>배포 페이지 — <a href="https://greenpowersw.github.io/Pages-releases/SimulationTMS/">https://greenpowersw.github.io/Pages-releases/SimulationTMS/</a></li>
+    <li>제작 — Flex Power Co., Ltd.</li>
+  </ul>
+</section>
+
+</main>
+</div>
+
+<footer class="site-foot">
+  <div><span class="foot-brand">SimulationTMS</span> User Guide · 최종 업데이트 2026-04-13</div>
+</footer>
+
+<!-- Back to top -->
+<button class="to-top" id="toTop" aria-label="맨 위로">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 15l-6-6-6 6"/></svg>
+</button>
+
+<script>
+  // Scrollspy — highlight active TOC item
+  (function () {
+    var links = Array.from(document.querySelectorAll('aside.toc a'));
+    var sections = links.map(function (a) {
+      return document.querySelector(a.getAttribute('href'));
+    });
+
+    function onScroll() {
+      var y = window.scrollY + 120;
+      var active = 0;
+      for (var i = 0; i < sections.length; i++) {
+        if (sections[i] && sections[i].offsetTop <= y) active = i;
+      }
+      links.forEach(function (a, i) { a.classList.toggle('active', i === active); });
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    // Back to top
+    var btn = document.getElementById('toTop');
+    window.addEventListener('scroll', function () {
+      btn.classList.toggle('visible', window.scrollY > 400);
+    }, { passive: true });
+    btn.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TestTMS &mdash; 사용자 매뉴얼</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Pretendard:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0b0d12;
+    --bg-elev: #12151c;
+    --bg-panel: #171b24;
+    --border: #242a36;
+    --border-soft: #1c2029;
+    --text: #e6e9ef;
+    --text-dim: #a0a6b3;
+    --text-mute: #6b7280;
+    --accent: #1976d2;
+    --accent-2: #64b5f6;
+    --accent-soft: rgba(25, 118, 210, 0.12);
+    --info: #4aa8ff;
+    --success: #35d073;
+    --warn: #ffcc4d;
+    --danger: #ff5a6a;
+    --grad-1: linear-gradient(135deg, #1565c0 0%, #1976d2 50%, #42a5f5 100%);
+    --grad-2: linear-gradient(180deg, #1a1f2b 0%, #0b0d12 100%);
+    --code-bg: #0e1117;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.3);
+    --shadow-md: 0 4px 16px rgba(0,0,0,0.4);
+    --shadow-lg: 0 20px 60px rgba(0,0,0,0.5);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  html, body { margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Pretendard', 'Inter', -apple-system, 'Segoe UI', 'Malgun Gothic', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 15px;
+    font-feature-settings: "cv02", "cv03", "cv04";
+    -webkit-font-smoothing: antialiased;
+  }
+
+  code, pre { font-family: 'JetBrains Mono', Consolas, 'Courier New', monospace; }
+
+  /* === Hero === */
+  .hero {
+    position: relative;
+    padding: 96px 24px 120px;
+    overflow: hidden;
+    background:
+      radial-gradient(ellipse 80% 60% at 20% 30%, rgba(25, 118, 210, 0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 80% 70%, rgba(74, 168, 255, 0.12) 0%, transparent 60%),
+      var(--grad-2);
+    border-bottom: 1px solid var(--border);
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 40px 40px;
+    mask-image: radial-gradient(ellipse 60% 50% at 50% 40%, black 40%, transparent 100%);
+    pointer-events: none;
+  }
+  .hero-inner {
+    position: relative;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .hero .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    background: var(--accent-soft);
+    border: 1px solid rgba(25, 118, 210, 0.3);
+    border-radius: 999px;
+    color: var(--accent-2);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .hero .eyebrow::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent-2);
+    box-shadow: 0 0 0 4px rgba(25,118,210,0.2);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(25,118,210,0.3); }
+    50% { box-shadow: 0 0 0 6px rgba(25,118,210,0); }
+  }
+  .hero h1 {
+    margin: 0 0 16px;
+    font-size: clamp(40px, 6vw, 72px);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    background: var(--grad-1);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero p.lead {
+    max-width: 680px;
+    font-size: 18px;
+    color: var(--text-dim);
+    margin: 0 0 32px;
+  }
+  .hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    font-size: 13px;
+    color: var(--text-mute);
+  }
+  .hero-meta span {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 12px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+  }
+  .hero-meta span svg { width: 14px; height: 14px; }
+
+  /* === Layout === */
+  .layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 48px;
+    max-width: 1280px;
+    margin: -60px auto 0;
+    padding: 0 32px 96px;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* === TOC === */
+  aside.toc {
+    position: sticky;
+    top: 24px;
+    align-self: start;
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px 12px;
+    max-height: calc(100vh - 48px);
+    overflow-y: auto;
+    box-shadow: var(--shadow-md);
+  }
+  aside.toc h3 {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--text-mute);
+    text-transform: uppercase;
+    margin: 4px 12px 12px;
+  }
+  aside.toc ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    counter-reset: toc;
+  }
+  aside.toc li {
+    counter-increment: toc;
+    position: relative;
+  }
+  aside.toc a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    color: var(--text-dim);
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 13.5px;
+    font-weight: 500;
+    transition: all 0.15s ease;
+    position: relative;
+  }
+  aside.toc a::before {
+    content: counter(toc, decimal-leading-zero);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-mute);
+    font-weight: 500;
+  }
+  aside.toc a:hover {
+    background: rgba(255,255,255,0.04);
+    color: var(--text);
+  }
+  aside.toc a.active {
+    background: var(--accent-soft);
+    color: var(--accent-2);
+  }
+  aside.toc a.active::before { color: var(--accent-2); }
+  aside.toc a.active::after {
+    content: '';
+    position: absolute;
+    left: -12px;
+    top: 50%; transform: translateY(-50%);
+    width: 3px; height: 18px;
+    background: var(--accent);
+    border-radius: 0 3px 3px 0;
+  }
+
+  /* === Content === */
+  main { min-width: 0; }
+  section.doc {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 36px 40px;
+    margin-bottom: 24px;
+    scroll-margin-top: 24px;
+    box-shadow: var(--shadow-sm);
+    transition: border-color 0.2s ease;
+  }
+  section.doc:hover { border-color: var(--border); }
+  section.doc .sec-head {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-soft);
+  }
+  section.doc .sec-num {
+    flex-shrink: 0;
+    width: 44px; height: 44px;
+    display: grid; place-items: center;
+    background: var(--grad-1);
+    border-radius: 12px;
+    color: #fff;
+    font-weight: 700;
+    font-size: 16px;
+    box-shadow: 0 4px 14px rgba(25,118,210,0.3);
+  }
+  section.doc h2 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  section.doc h2 + .sub-title {
+    color: var(--text-mute);
+    font-size: 13px;
+    margin-top: 4px;
+  }
+  section.doc h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 24px 0 10px;
+    color: var(--text);
+    display: flex; align-items: center; gap: 8px;
+  }
+  section.doc h3::before {
+    content: '';
+    width: 3px; height: 14px;
+    background: var(--accent);
+    border-radius: 2px;
+  }
+  section.doc p { margin: 8px 0; color: var(--text-dim); }
+  section.doc strong { color: var(--text); font-weight: 600; }
+  section.doc ul, section.doc ol { padding-left: 20px; color: var(--text-dim); }
+  section.doc li { margin: 6px 0; }
+  section.doc li strong { color: var(--text); }
+
+  code {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    padding: 1px 7px;
+    border-radius: 5px;
+    font-size: 0.88em;
+    color: var(--accent-2);
+  }
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    overflow-x: auto;
+    font-size: 13px;
+    line-height: 1.6;
+    margin: 14px 0;
+    position: relative;
+  }
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: var(--text);
+  }
+  pre::before {
+    content: '';
+    position: absolute;
+    top: 12px; right: 14px;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: #3a3f4b;
+    box-shadow: -16px 0 0 #3a3f4b, -32px 0 0 #3a3f4b;
+  }
+
+  /* Tables */
+  .table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin: 14px 0;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 14px;
+  }
+  th, td {
+    padding: 12px 16px;
+    text-align: left;
+    vertical-align: top;
+    border-bottom: 1px solid var(--border-soft);
+  }
+  thead th {
+    background: rgba(255,255,255,0.02);
+    font-weight: 600;
+    color: var(--text);
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: rgba(255,255,255,0.02); }
+
+  /* Callouts */
+  .callout {
+    display: flex;
+    gap: 14px;
+    padding: 14px 18px;
+    border-radius: 10px;
+    margin: 16px 0;
+    border: 1px solid;
+    font-size: 14px;
+  }
+  .callout .ico { flex-shrink: 0; width: 22px; height: 22px; margin-top: 1px; }
+  .callout p { margin: 0; color: var(--text); }
+  .callout.tip { background: rgba(74,168,255,0.08); border-color: rgba(74,168,255,0.3); }
+  .callout.tip .ico { color: var(--info); }
+  .callout.note { background: rgba(255,204,77,0.08); border-color: rgba(255,204,77,0.3); }
+  .callout.note .ico { color: var(--warn); }
+  .callout.warn { background: rgba(255,90,106,0.08); border-color: rgba(255,90,106,0.3); }
+  .callout.warn .ico { color: var(--danger); }
+  .callout strong { margin-right: 6px; }
+
+  /* Feature grid */
+  .feat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 14px;
+    margin: 20px 0 4px;
+  }
+  .feat-card {
+    padding: 16px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    transition: transform 0.15s ease, border-color 0.15s ease;
+  }
+  .feat-card:hover { transform: translateY(-2px); border-color: rgba(25,118,210,0.4); }
+  .feat-card .fi {
+    display: grid; place-items: center;
+    width: 36px; height: 36px;
+    border-radius: 9px;
+    background: var(--accent-soft);
+    color: var(--accent-2);
+    margin-bottom: 10px;
+  }
+  .feat-card .fi svg { width: 18px; height: 18px; }
+  .feat-card h4 { margin: 0 0 4px; font-size: 14px; font-weight: 600; }
+  .feat-card p { margin: 0; font-size: 13px; color: var(--text-dim); }
+
+  /* Steps */
+  ol.steps { list-style: none; padding: 0; counter-reset: step; }
+  ol.steps > li {
+    counter-increment: step;
+    position: relative;
+    padding: 10px 0 10px 48px;
+    margin: 0;
+  }
+  ol.steps > li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0; top: 8px;
+    width: 32px; height: 32px;
+    display: grid; place-items: center;
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    color: var(--accent-2);
+    font-weight: 700;
+    font-size: 13px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  ol.steps > li:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 15.5px; top: 42px; bottom: 0;
+    width: 1px;
+    background: var(--border);
+  }
+
+  /* Tags */
+  .tag {
+    display: inline-block;
+    padding: 2px 8px;
+    background: var(--accent-soft);
+    color: var(--accent-2);
+    border: 1px solid rgba(25,118,210,0.3);
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    margin-left: 4px;
+  }
+
+  a { color: var(--accent-2); text-decoration: none; }
+  a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+  /* Footer */
+  footer.site-foot {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 40px 32px 60px;
+    border-top: 1px solid var(--border);
+    color: var(--text-mute);
+    font-size: 13px;
+    text-align: center;
+  }
+  footer.site-foot .foot-brand {
+    background: var(--grad-1);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 700;
+  }
+
+  /* Back to top */
+  .to-top {
+    position: fixed;
+    right: 28px; bottom: 28px;
+    width: 44px; height: 44px;
+    display: grid; place-items: center;
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    color: var(--text-dim);
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.2s ease;
+    z-index: 100;
+    box-shadow: var(--shadow-md);
+  }
+  .to-top.visible { opacity: 1; transform: translateY(0); }
+  .to-top:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .to-top svg { width: 18px; height: 18px; }
+
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 5px; }
+  ::-webkit-scrollbar-thumb:hover { background: #2f3647; }
+
+  @media (max-width: 960px) {
+    .layout { grid-template-columns: 1fr; gap: 24px; padding: 0 20px 60px; }
+    aside.toc { position: static; max-height: none; }
+    section.doc { padding: 24px 22px; }
+    section.doc h2 { font-size: 20px; }
+    .hero { padding: 64px 20px 100px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <span class="eyebrow">TMS Client Simulator</span>
+    <h1>TestTMS<br>User Guide</h1>
+    <p class="lead">TMS_F 측 클라이언트 시뮬레이터. SimulationTMS(서버)에 TCP로 접속하여 열화상 카메라 데이터를 폴링하고, Spot/Area 온도를 시각화하며 SetTempInfo/SetCamInfo 명령을 테스트합니다.</p>
+    <div class="hero-meta">
+      <span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"/></svg>
+        v1.0.3
+      </span>
+      <span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        최종 업데이트 2026-04-15
+      </span>
+      <span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        9 sections
+      </span>
+      <span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        KO / EN
+      </span>
+    </div>
+  </div>
+</section>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+<aside class="toc">
+  <h3>Contents</h3>
+  <ol>
+    <li><a href="#intro">소개</a></li>
+    <li><a href="#install">설치 및 실행</a></li>
+    <li><a href="#screen">메인 화면 구성</a></li>
+    <li><a href="#quickstart">빠른 시작</a></li>
+    <li><a href="#camera">카메라 관리</a></li>
+    <li><a href="#setcommand">Set 명령</a></li>
+    <li><a href="#preferences">환경 설정</a></li>
+    <li><a href="#update">자동 업데이트</a></li>
+    <li><a href="#contact">문의 및 피드백</a></li>
+  </ol>
+</aside>
+
+<main>
+
+<!-- 01. 소개 -->
+<section class="doc" id="intro">
+  <div class="sec-head">
+    <div class="sec-num">01</div>
+    <div><h2>소개</h2><div class="sub-title">Introduction</div></div>
+  </div>
+  <p><strong>TestTMS</strong>는 TMS_F(Thermal Monitoring System) 프로그램 개발 및 검증을 위한 <strong>TMS_F 측 클라이언트 시뮬레이터</strong>입니다. SimulationTMS(서버)에 TCP 클라이언트로 접속하여 TMS TCP 프로토콜을 검증하고, Spot/Area 온도를 시각화하며, SetTempInfo/SetCamInfo 명령 송신을 테스트합니다.</p>
+
+  <div class="feat-grid">
+    <div class="feat-card">
+      <div class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h16M4 6h16M4 18h8"/></svg></div>
+      <h4>최대 21대 카메라</h4>
+      <p>IP/Port 개별 설정, Add/Remove로 동적 관리</p>
+    </div>
+    <div class="feat-card">
+      <div class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+      <h4>TCP 이중 채널</h4>
+      <p>Port 5000 Polling / Port 5001+ Push 수신</p>
+    </div>
+    <div class="feat-card">
+      <div class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></div>
+      <h4>Sp/Ar 요약 그리드</h4>
+      <p>전체 카메라의 Spot/Area 온도 한눈에 확인</p>
+    </div>
+    <div class="feat-card">
+      <div class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+      <h4>Iron 열화상 렌더링</h4>
+      <p>실시간 Iron 컬러맵 프리뷰</p>
+    </div>
+    <div class="feat-card">
+      <div class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div>
+      <h4>Set 명령 테스트</h4>
+      <p>SetTempInfo / SetCamInfo 직접 송신</p>
+    </div>
+    <div class="feat-card">
+      <div class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+      <h4>자동 업데이트</h4>
+      <p>Velopack 기반 원클릭 업데이트</p>
+    </div>
+  </div>
+
+  <h3>지원 환경</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>항목</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td><strong>OS</strong></td><td>Windows 10 / 11 (64-bit)</td></tr>
+        <tr><td><strong>프레임워크</strong></td><td>.NET 8.0 (WPF, win-x64)</td></tr>
+        <tr><td><strong>설치 경로</strong></td><td><code>C:\FlexPower\TestTMS\</code></td></tr>
+        <tr><td><strong>통신</strong></td><td>TCP/IP — Port 5000 (Control), 5001~5005 (Monitor)</td></tr>
+        <tr><td><strong>TMS 모델</strong></td><td>TMS_350, 160×120</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- 02. 설치 및 실행 -->
+<section class="doc" id="install">
+  <div class="sec-head">
+    <div class="sec-num">02</div>
+    <div><h2>설치 및 실행</h2><div class="sub-title">Installation &amp; Launch</div></div>
+  </div>
+
+  <h3>설치 방법</h3>
+  <ol class="steps">
+    <li>
+      <strong>설치 프로그램 다운로드</strong><br>
+      Help 메뉴 → <em>Download Installer</em> 또는<br>
+      <code>https://greenpowersw.github.io/Pages-releases/TestTMS/</code> 에서 최신 버전의 <code>TestTMS-{version}-Setup.exe</code> 다운로드
+    </li>
+    <li>
+      <strong>설치 실행</strong><br>
+      다운로드한 <code>.exe</code> 파일을 실행합니다. 설치 경로: <code>C:\FlexPower\TestTMS\</code>
+    </li>
+    <li>
+      <strong>프로그램 시작</strong><br>
+      바탕화면 또는 시작 메뉴의 <strong>TestTMS</strong> 아이콘을 더블클릭합니다.
+    </li>
+  </ol>
+
+  <h3>설치 구조</h3>
+  <pre><code>C:\FlexPower\TestTMS\
+├── Update.exe          # Velopack 업데이트 런처
+├── current\            # 실행 파일 (TestTMS.exe 등)
+├── Config\             # 사용자 설정 (업데이트 후에도 보존)
+│   └── AppSettings.json
+└── packages\           # 업데이트 패키지 캐시</code></pre>
+
+  <div class="callout tip">
+    <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
+    <p><strong>설정 보존:</strong> 업데이트 시 <code>Config\AppSettings.json</code>은 덮어쓰지 않으므로 기존 카메라 목록과 설정이 유지됩니다.</p>
+  </div>
+</section>
+
+<!-- 03. 메인 화면 구성 -->
+<section class="doc" id="screen">
+  <div class="sec-head">
+    <div class="sec-num">03</div>
+    <div><h2>메인 화면 구성</h2><div class="sub-title">Main Screen Layout</div></div>
+  </div>
+
+  <p>메인 화면은 <strong>3개 패널</strong>로 구성됩니다.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>패널</th><th>위치</th><th>기능</th></tr></thead>
+      <tbody>
+        <tr><td><strong>카메라 목록</strong></td><td>좌측</td><td>IP/Port 인라인 편집, Connect/Polling 개별 토글, 일괄 버튼, Add/Remove</td></tr>
+        <tr><td><strong>중앙 패널</strong></td><td>중앙</td><td>Sp/Ar Summary Grid, Detail Table, Iron 열화상 프리뷰, Set 명령 패널</td></tr>
+        <tr><td><strong>로그 패널</strong></td><td>하단</td><td>INFO/WARN/ERR 색상 구분, 자동 스크롤, 복사 기능</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>중앙 패널 세부 구성</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>구역</th><th>설명</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Sp/Ar Summary</strong></td><td>전체 카메라(행) × Sp01~Sp03, Ar01~Ar10(열) 온도 요약 그리드. 행 클릭 시 해당 카메라 선택.</td></tr>
+        <tr><td><strong>CAM 배지</strong></td><td>현재 선택된 카메라 번호 (CAM 01 형식) 강조 표시</td></tr>
+        <tr><td><strong>Detail Table</strong></td><td>선택된 카메라의 Spot 3개 + Area 10개 상세 온도, Warning/Alarm 임계값, 상태</td></tr>
+        <tr><td><strong>Thermal Preview</strong></td><td>선택된 카메라의 Iron 컬러맵 열화상 이미지 (Min/Max/Avg 온도 표시)</td></tr>
+        <tr><td><strong>Set Commands</strong></td><td>SetTempInfo(경보 임계값) / SetCamInfo(방사율, 게인 모드, FFC 주기) 명령 패널</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>상태 표시줄</h3>
+  <p>하단 상태 표시줄에 실시간으로 연결 상태가 표시됩니다.</p>
+  <pre><code>Connected 2/5 | Polling 2 cams | Last RX: 14:32:05</code></pre>
+</section>
+
+<!-- 04. 빠른 시작 -->
+<section class="doc" id="quickstart">
+  <div class="sec-head">
+    <div class="sec-num">04</div>
+    <div><h2>빠른 시작</h2><div class="sub-title">Quick Start</div></div>
+  </div>
+
+  <div class="callout note">
+    <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    <p><strong>사전 조건:</strong> SimulationTMS(서버) 또는 실제 TMS 카메라가 네트워크에서 동작 중이어야 합니다.</p>
+  </div>
+
+  <ol class="steps">
+    <li>
+      <strong>카메라 IP/Port 설정</strong><br>
+      좌측 카메라 목록에서 각 카메라 행의 IP 주소와 Port를 클릭하여 직접 수정합니다.<br>
+      기본값: <code>127.0.0.1 : 5000</code>
+    </li>
+    <li>
+      <strong>Connect</strong><br>
+      카메라 행의 <strong>Connect</strong> 버튼을 클릭하거나, 상단의 <em>Connect All</em> 버튼을 사용합니다.<br>
+      연결 성공 시 상태 인디케이터(●)가 <span style="color:#35d073">녹색</span>으로 변경됩니다.
+    </li>
+    <li>
+      <strong>Start Polling</strong><br>
+      <strong>Start Polling</strong> 버튼을 클릭합니다. 200ms 주기로 ReqImage 요청이 시작되며, 중앙 패널에 온도 데이터와 열화상 이미지가 실시간으로 갱신됩니다.
+    </li>
+    <li>
+      <strong>데이터 확인</strong><br>
+      Sp/Ar Summary 그리드에서 전체 현황을 확인하고, 행 클릭으로 카메라를 선택하면 Detail Table과 Thermal Preview가 해당 카메라 데이터로 갱신됩니다.
+    </li>
+  </ol>
+
+  <div class="callout tip">
+    <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
+    <p><strong>연결 후 IP/Port 잠금:</strong> Connect 상태에서는 IP/Port 입력 필드가 자동으로 비활성화됩니다. Disconnect 후 수정할 수 있습니다.</p>
+  </div>
+</section>
+
+<!-- 05. 카메라 관리 -->
+<section class="doc" id="camera">
+  <div class="sec-head">
+    <div class="sec-num">05</div>
+    <div><h2>카메라 관리</h2><div class="sub-title">Camera Management</div></div>
+  </div>
+
+  <h3>카메라 추가 / 제거</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>버튼</th><th>동작</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Add Camera</strong></td><td>새 카메라 항목 추가 (기본 IP/Port로 초기화)</td></tr>
+        <tr><td><strong>Remove</strong></td><td>선택된 카메라 삭제 (연결 중이면 자동 Disconnect 후 제거)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>연결 상태 인디케이터</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>색상</th><th>상태</th></tr></thead>
+      <tbody>
+        <tr><td><span style="color:#6b7280">●</span> 회색</td><td>Disconnected</td></tr>
+        <tr><td><span style="color:#ffcc4d">●</span> 황색</td><td>Connecting</td></tr>
+        <tr><td><span style="color:#35d073">●</span> 녹색</td><td>Connected</td></tr>
+        <tr><td><span style="color:#ff5a6a">●</span> 적색</td><td>Error</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>일괄 제어 버튼</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>버튼</th><th>동작</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Connect All</strong></td><td>목록의 모든 카메라를 동시에 연결</td></tr>
+        <tr><td><strong>Disconnect All</strong></td><td>모든 카메라 연결 해제</td></tr>
+        <tr><td><strong>Start Polling All</strong></td><td>연결된 모든 카메라의 폴링 시작</td></tr>
+        <tr><td><strong>Stop Polling All</strong></td><td>모든 카메라의 폴링 중지</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>TCP 이중 채널 구조</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>채널</th><th>Port</th><th>역할</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Control</strong></td><td>5000</td><td>ReqImage 200ms 폴링, SetTempInfo/SetCamInfo 송신, 2초 타임아웃</td></tr>
+        <tr><td><strong>Monitor</strong></td><td>5001~5005</td><td>서버 Push 수신 전용 (송신 없음). STX~ETX 프레임 파싱</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout tip">
+    <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
+    <p><strong>MaxFailCount:</strong> 연속 5회 응답 실패 시 자동 Disconnect됩니다. Preferences에서 횟수 변경 가능합니다.</p>
+  </div>
+</section>
+
+<!-- 06. Set 명령 -->
+<section class="doc" id="setcommand">
+  <div class="sec-head">
+    <div class="sec-num">06</div>
+    <div><h2>Set 명령</h2><div class="sub-title">Set Commands</div></div>
+  </div>
+
+  <p>선택된 카메라에 <strong>SetTempInfo</strong>와 <strong>SetCamInfo</strong> 명령을 직접 송신하여 카메라 설정을 변경할 수 있습니다.</p>
+
+  <h3>SetTempInfo — 온도 경보 임계값 설정</h3>
+  <p>Area별 Warning/Alarm 임계값을 설정합니다. 테이블에서 직접 값을 입력한 후 <strong>Apply to Camera</strong>를 클릭합니다.</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>컬럼</th><th>설명</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Area</strong></td><td>Area 인덱스 (Ar01~Ar10)</td></tr>
+        <tr><td><strong>Use</strong></td><td>해당 Area 활성화 여부</td></tr>
+        <tr><td><strong>Warn (°C)</strong></td><td>Warning 임계 온도</td></tr>
+        <tr><td><strong>Alarm (°C)</strong></td><td>Alarm 임계 온도</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>SetCamInfo — 카메라 파라미터 설정</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>항목</th><th>설명</th><th>기본값</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Emissivity</strong></td><td>방사율 (1~100)</td><td>100</td></tr>
+        <tr><td><strong>Gain Mode</strong></td><td>HIGH (0) / LOW (1)</td><td>HIGH (0)</td></tr>
+        <tr><td><strong>FFC Period (ms)</strong></td><td>FFC 자동 실행 주기 (밀리초)</td><td>30000</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout warn">
+    <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    <p><strong>주의:</strong> Set 명령은 카메라가 <strong>Connected</strong> 상태일 때만 동작합니다. 연결 전에는 Apply 버튼이 비활성화됩니다.</p>
+  </div>
+</section>
+
+<!-- 07. 환경 설정 -->
+<section class="doc" id="preferences">
+  <div class="sec-head">
+    <div class="sec-num">07</div>
+    <div><h2>환경 설정</h2><div class="sub-title">Preferences</div></div>
+  </div>
+
+  <p>메뉴 <em>Edit → Preferences</em> (또는 단축키)를 통해 환경 설정 창을 엽니다.</p>
+
+  <h3>General</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>항목</th><th>설명</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Language</strong></td><td>인터페이스 언어 (English / 한국어). 메인 화면 Language 메뉴에서도 변경 가능.</td></tr>
+        <tr><td><strong>Max Log Lines</strong></td><td>로그 패널 최대 유지 줄 수 (기본: 1000)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Polling</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>항목</th><th>기본값</th><th>설명</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Req Image Interval (ms)</strong></td><td>200</td><td>ReqImage 전송 주기</td></tr>
+        <tr><td><strong>Response Timeout (ms)</strong></td><td>2000</td><td>응답 대기 타임아웃</td></tr>
+        <tr><td><strong>Max Fail Count</strong></td><td>5</td><td>연속 실패 허용 횟수. 초과 시 자동 Disconnect</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Updates</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>항목</th><th>설명</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Check for updates on startup</strong></td><td>시작 시 자동 업데이트 확인 여부 (기본: ON)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>설정 파일 저장 위치</h3>
+  <pre><code>설치 모드: C:\FlexPower\TestTMS\Config\AppSettings.json
+개발 모드:  &lt;exe 폴더&gt;\Config\AppSettings.json</code></pre>
+</section>
+
+<!-- 08. 자동 업데이트 -->
+<section class="doc" id="update">
+  <div class="sec-head">
+    <div class="sec-num">08</div>
+    <div><h2>자동 업데이트</h2><div class="sub-title">Auto Update</div></div>
+  </div>
+
+  <p>TestTMS는 <strong>Velopack</strong> 기반 자동 업데이트를 지원합니다. 업데이트 서버: <code>https://greenpowersw.github.io/Pages-releases/TestTMS/</code></p>
+
+  <h3>업데이트 확인 방법</h3>
+  <ul>
+    <li><strong>시작 시 자동 확인</strong> — Preferences의 <em>Check for updates on startup</em>이 ON이면 앱 시작 시 자동 확인</li>
+    <li><strong>수동 확인</strong> — Help 메뉴 → <em>Check for Updates...</em></li>
+  </ul>
+
+  <h3>업데이트 절차</h3>
+  <ol class="steps">
+    <li>새 버전 감지 시 업데이트 알림 대화상자 표시</li>
+    <li><strong>예</strong> 클릭 시 백그라운드 다운로드 시작 (로그 패널에서 진행률 확인)</li>
+    <li>다운로드 완료 후 자동으로 업데이트 적용 및 재시작</li>
+  </ol>
+
+  <div class="callout note">
+    <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    <p><strong>개발 모드 제한:</strong> 설치 프로그램(<code>C:\FlexPower\TestTMS\current\</code>)으로 실행되지 않은 경우 자동 업데이트 기능이 비활성화됩니다.</p>
+  </div>
+
+  <h3>설치 파일 직접 다운로드</h3>
+  <p>업데이트가 어려운 환경에서는 Help 메뉴 → <em>Download Installer</em>로 설치 파일을 직접 다운로드할 수 있습니다.</p>
+</section>
+
+<!-- 09. 문의 및 피드백 -->
+<section class="doc" id="contact">
+  <div class="sec-head">
+    <div class="sec-num">09</div>
+    <div><h2>문의 및 피드백</h2><div class="sub-title">Contact &amp; Feedback</div></div>
+  </div>
+
+  <p>버그 신고, 기능 제안, 사용 중 문의는 아래 채널을 이용하세요.</p>
+
+  <h3>피드백 보내기</h3>
+  <p>Help 메뉴 → <em>Send Feedback...</em> 를 클릭하면 프로그램명·버전·사이트 정보가 자동으로 입력된 Google Forms가 브라우저에서 열립니다.</p>
+
+  <h3>매뉴얼 및 릴리스 노트</h3>
+  <ul>
+    <li><strong>온라인 매뉴얼</strong>: <a href="https://greenpowersw.github.io/Pages-releases/TestTMS/manual/" target="_blank">https://greenpowersw.github.io/Pages-releases/TestTMS/manual/</a></li>
+    <li><strong>설치 파일</strong>: <a href="https://greenpowersw.github.io/Pages-releases/TestTMS/" target="_blank">https://greenpowersw.github.io/Pages-releases/TestTMS/</a></li>
+  </ul>
+
+  <div class="callout tip">
+    <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
+    <p><strong>버전 정보 확인:</strong> Help 메뉴 → <em>About</em>에서 현재 버전, 빌드 날짜, Site 정보를 확인할 수 있습니다.</p>
+  </div>
+</section>
+
+</main>
+</div><!-- .layout -->
+
+<footer class="site-foot">
+  <p><span class="foot-brand">TestTMS</span> &nbsp;User Guide &nbsp;v1.0.3</p>
+  <p style="margin-top:6px">Copyright &copy; 2026 Flex Power Co., Ltd. All rights reserved.</p>
+  <p style="margin-top:4px">문서작성자: 허창원 ((주)그린파워) &nbsp;|&nbsp; AI 지원: Claude Code Assistant</p>
+</footer>
+
+<button class="to-top" id="toTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 15l-6-6-6 6"/></svg>
+</button>
+
+<script>
+  // TOC 활성화
+  const sections = document.querySelectorAll('section.doc');
+  const tocLinks = document.querySelectorAll('aside.toc a');
+  const toTop = document.getElementById('toTop');
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        tocLinks.forEach(a => a.classList.remove('active'));
+        const active = document.querySelector(`aside.toc a[href="#${e.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+
+  window.addEventListener('scroll', () => {
+    toTop.classList.toggle('visible', window.scrollY > 400);
+  });
+</script>
+</body>
+</html>
